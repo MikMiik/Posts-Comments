@@ -1,5 +1,5 @@
 import config from "@/config"
-import { Home, Login, Posts, PostDetail} from "@/pages"
+import { Home, Login, Posts, PostDetail, NewPost } from "@/pages"
 import DefaultLayout from "@/Layouts/DefaultLayout"
 
 const routes = [
@@ -18,9 +18,14 @@ const routes = [
         component: Posts,
         layout: DefaultLayout,
     },
-     {
+    {
         path: config.routes.postDetail,
         component: PostDetail,
+        layout: DefaultLayout,
+    },
+    {
+        path: config.routes.newPost,
+        component: NewPost,
         layout: DefaultLayout,
     },
     {
