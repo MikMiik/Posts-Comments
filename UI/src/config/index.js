@@ -4,7 +4,6 @@ const config = {
         login: "/login",
         posts: "/posts",
         postDetail: "/posts/:id",
-        newPost: "/new-post",
         editPost: "/edit-post/:id",
         notFound: "*",
     },

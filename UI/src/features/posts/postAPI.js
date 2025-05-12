@@ -11,20 +11,20 @@ export const postsApi = createApi({
             query: (id) => `posts/${id}`,
         }),
         createPost: builder.mutation({
-            query: ({ newPost }) => ({
+            query: (data) => ({
                 url: "posts",
                 method: "POST",
-                body: newPost,
+                body: data,
             }),
         }),
         updatePost: builder.mutation({
-            query: ({ id, ...patch }) => ({
+            query: ({ id, data }) => ({
                 url: `posts/${id}`,
                 method: "PATCH",
-                body: patch,
+                body: data,
             }),
         }),
-        delete: builder.mutation({
+        deletePost: builder.mutation({
             query: (id) => ({
                 url: `posts/${id}`,
                 method: "DELETE",
@@ -38,5 +38,5 @@ export const {
     useGetOnePostQuery,
     useCreatePostMutation,
     useUpdatePostMutation,
-    useDeleteMutation,
+    useDeletePostMutation,
 } = postsApi

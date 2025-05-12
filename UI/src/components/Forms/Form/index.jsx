@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+
 import { Children, cloneElement } from "react"
 
 import TextInput from "../TextInput"
 
-function Form({ schema = {}, defaultValues = {}, formProps, onSubmit, children }) {
+function Form({ schema = yup.object().shape({}), defaultValues = {}, formProps, onSubmit, children }) {
     const config = {
         resolver: yupResolver(schema),
         defaultValues,
