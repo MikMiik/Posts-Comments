@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom"
 
-import { useGetAllPostsQuery, useCreatePostMutation, useDeletePostMutation } from "@/features/posts/postAPI"
+import { useGetAllPostsQuery, useCreatePostMutation, useDeletePostMutation } from "@/features/posts/postsAPI"
 import { Form, TextInput } from "@/components/Forms"
 
 function Posts() {
+    const { data, isLoading, error, refetch } = useGetAllPostsQuery(undefined, { refetchOnMountOrArgChange: true })
     const [createPost] = useCreatePostMutation()
     const [deletePost] = useDeletePostMutation()
-    const { data, isLoading, error, refetch } = useGetAllPostsQuery()
-
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error loading posts.</div>
 
-    const allPosts = data?.data || []
-
+    const allPosts = data?.data.posts || []
     const onSubmit = async (data) => {
         try {
             const result = await createPost(data).unwrap()
@@ -27,7 +25,6 @@ function Posts() {
         try {
             const result = await deletePost(id).unwrap()
             console.log("Result:", result)
-            refetch()
         } catch (err) {
             console.error("Create post failed:", err)
         }

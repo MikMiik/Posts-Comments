@@ -3,9 +3,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export const postsApi = createApi({
     reducerPath: "postsApi",
     baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_LOCAL_POST_URL }),
+    tagTypes: ["Post"],
     endpoints: (builder) => ({
         getAllPosts: builder.query({
-            query: () => "posts",
+            query: (limit = 10) => `posts?limit=${limit}`,
+            providesTags: ["Post"],
         }),
         getOnePost: builder.query({
             query: (id) => `posts/${id}`,
@@ -16,6 +18,7 @@ export const postsApi = createApi({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["Post"],
         }),
         updatePost: builder.mutation({
             query: ({ id, data }) => ({
@@ -29,6 +32,7 @@ export const postsApi = createApi({
                 url: `posts/${id}`,
                 method: "DELETE",
             }),
+            invalidatesTags: ["Post"],
         }),
     }),
 })
