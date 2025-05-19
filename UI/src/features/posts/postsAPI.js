@@ -11,6 +11,7 @@ export const postsApi = createApi({
         }),
         getOnePost: builder.query({
             query: (id) => `posts/${id}`,
+            providesTags: ["Post"],
         }),
         createPost: builder.mutation({
             query: (data) => ({
@@ -21,11 +22,12 @@ export const postsApi = createApi({
             invalidatesTags: ["Post"],
         }),
         updatePost: builder.mutation({
-            query: ({ id, data }) => ({
-                url: `posts/${id}`,
+            query: (data) => ({
+                url: `posts/${data.id}`,
                 method: "PATCH",
-                body: data,
+                body: data.filteredData,
             }),
+            invalidatesTags: ["Post"],
         }),
         deletePost: builder.mutation({
             query: (id) => ({

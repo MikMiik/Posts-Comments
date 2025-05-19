@@ -1,21 +1,15 @@
-import { Link } from "react-router-dom"
-
-import { useGetAllPostsQuery, useCreatePostMutation, useDeletePostMutation } from "@/features/posts/postsAPI"
+import { useCreatePostMutation, useDeletePostMutation } from "@/features/posts/postsAPI"
 import { Form, TextInput } from "@/components/Forms"
+import PostsList from "./components/PostsList"
 
 function Posts() {
-    const { data, isLoading, error, refetch } = useGetAllPostsQuery(undefined, { refetchOnMountOrArgChange: true })
     const [createPost] = useCreatePostMutation()
     const [deletePost] = useDeletePostMutation()
-    if (isLoading) return <div>Loading...</div>
-    if (error) return <div>Error loading posts.</div>
 
-    const allPosts = data?.data.posts || []
     const onSubmit = async (data) => {
         try {
-            const result = await createPost(data).unwrap()
+            const result = await createPost({ ...data, user_id: 67 }).unwrap()
             console.log("Result:", result)
-            refetch()
         } catch (err) {
             console.error("Create post failed:", err)
         }
@@ -26,21 +20,13 @@ function Posts() {
             const result = await deletePost(id).unwrap()
             console.log("Result:", result)
         } catch (err) {
-            console.error("Create post failed:", err)
+            console.error("Delete post failed:", err)
         }
     }
 
     return (
         <>
-            <h2>Post List</h2>
-            {allPosts.map((post) => (
-                <div key={post.id}>
-                    <Link to={`/posts/${post.id}`}>{post.title}</Link>
-                    <button onClick={() => handleDeletePost(post.id)}>Delete</button>
-                    <br />
-                </div>
-            ))}
-            <br />
+            <PostsList handleDeletePost={handleDeletePost} />
             <Form
                 defaultValues={{
                     title: "",
@@ -49,6 +35,7 @@ function Posts() {
                 onSubmit={onSubmit}
             >
                 <TextInput name="title" placeholder="Title"></TextInput>
+                <TextInput name="description" placeholder="Description"></TextInput>
                 <TextInput name="content" placeholder="Content"></TextInput>
                 <button>Add</button>
             </Form>

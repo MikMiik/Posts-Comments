@@ -6,7 +6,7 @@ export const commentsApi = createApi({
     tagTypes: ["Comment"],
     endpoints: (builder) => ({
         getAllComments: builder.query({
-            query: (limit = 10) => `comments?limit=${limit}`,
+            query: () => `comments`,
             providesTags: ["Comment"],
         }),
         getOneComment: builder.query({
@@ -22,7 +22,7 @@ export const commentsApi = createApi({
                 method: "POST",
                 body: data,
             }),
-            invalidatesTags: (result, error, { post_id }) => [{ type: "Comment", id: post_id }],
+            invalidatesTags: ["Comment"],
         }),
         updateComment: builder.mutation({
             query: ({ id, data }) => ({
@@ -30,6 +30,7 @@ export const commentsApi = createApi({
                 method: "PATCH",
                 body: data,
             }),
+            invalidatesTags: ["Comment"],
         }),
         deleteComment: builder.mutation({
             query: (id) => ({

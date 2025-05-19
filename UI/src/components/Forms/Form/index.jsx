@@ -6,7 +6,7 @@ import { Children, cloneElement } from "react"
 
 import TextInput from "../TextInput"
 
-function Form({ schema = yup.object().shape({}), defaultValues = {}, formProps, onSubmit, children }) {
+function Form({ schema = yup.object().shape({}), defaultValues = {}, formProps = {}, onSubmit, children }) {
     const config = {
         resolver: yupResolver(schema),
         defaultValues,
@@ -17,8 +17,8 @@ function Form({ schema = yup.object().shape({}), defaultValues = {}, formProps, 
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm(formControl)
-
     const allowedComponents = [TextInput]
     const inputs = Children.toArray(children).map((child) => {
         if (!allowedComponents.includes(child.type)) return child
@@ -27,7 +27,16 @@ function Form({ schema = yup.object().shape({}), defaultValues = {}, formProps, 
             message: errors[child.props.name]?.message,
         })
     })
-    return <form onSubmit={handleSubmit(onSubmit)}>{inputs}</form>
+    return (
+        <form
+            onSubmit={handleSubmit((data) => {
+                onSubmit(data)
+                if (!config.loginForm) reset()
+            })}
+        >
+            {inputs}
+        </form>
+    )
 }
 
 export default Form
