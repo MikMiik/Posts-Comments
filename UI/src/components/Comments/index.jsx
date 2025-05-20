@@ -20,14 +20,10 @@ const Comments = ({ postId, currentUserId }) => {
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error loading comments</div>
     const comments = data?.data
+    console.log(comments)
     const rootComments = comments
         .filter((comment) => comment.parent_id === null)
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-
-    // const getReplies = (commentId) =>
-    //     comments
-    //         .filter((comment) => comment.parent_id === commentId)
-    //         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     const handleCreateComment = async (text, parent_id = null) => {
         await createComment({
             user_id: currentUserId,
@@ -62,7 +58,6 @@ const Comments = ({ postId, currentUserId }) => {
                     <Comment
                         key={rootComment.id}
                         comment={rootComment}
-                        // replies={getReplies(rootComment.id)}
                         allComments={comments}
                         currentUserId={currentUserId}
                         addComment={handleCreateComment}

@@ -14,7 +14,7 @@ export const commentsApi = createApi({
         }),
         getCommentsByPostId: builder.query({
             query: (id) => `posts/${id}/comments`,
-            providesTags: (result, error, id) => [{ type: "Comment", id }],
+            providesTags: ["Comment"],
         }),
         createComment: builder.mutation({
             query: (data) => ({
